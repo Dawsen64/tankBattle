@@ -70,7 +70,7 @@ public class GameFrame extends Frame {
 
     /**
      * 绘制菜单状态下的内容
-     * @param g 画笔对象,系统提供的,直接用
+     * @param g 画笔对象,系统提供的,直接用,老师等下说明
      */
     private void drawMenu(Graphics g){
 
