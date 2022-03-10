@@ -102,6 +102,11 @@ public class GameFrame extends Frame implements Runnable{
     private void drawAbout(Graphics g) {
     }
     private void drawRun(Graphics g) {
+        //绘制黑色的背景
+        //拿一个黑色的画笔
+        g.setColor(Color.BLACK);
+        //用画笔涂黑的区域
+        g.fillRect(0,0, Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT);
     }
     private void drawOver(Graphics g) {
     }
@@ -112,7 +117,6 @@ public class GameFrame extends Frame implements Runnable{
      */
     private void drawMenu(Graphics g){
         //绘制黑色的背景
-
         //拿一个黑色的画笔
         g.setColor(Color.BLACK);
         //用画笔涂黑的区域

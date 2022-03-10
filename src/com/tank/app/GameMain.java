@@ -14,6 +14,8 @@ import com.tank.util.Constant;
 public class GameMain {
     public static void main(String[] args) {
         new GameFrame();
+        //创建坦克对象，敌人的坦克对象
+
 
     }
 }
