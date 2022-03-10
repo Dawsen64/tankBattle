@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * @Author: zqiusen@qq.com
@@ -19,6 +20,9 @@ import java.awt.event.WindowEvent;
  * 所以的游戏展示的内容都要再此类内实现
  */
 public class GameFrame extends Frame implements Runnable{
+    // 定义一张和屏幕大小一致的图片
+    private BufferedImage bufImg = new BufferedImage(Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
+
     //表示游戏状态
     public static int gameState;
     //菜单指向
@@ -65,7 +69,10 @@ public class GameFrame extends Frame implements Runnable{
      * @param g
      */
     @Override
-    public void update(Graphics g) {
+    public void update(Graphics g1) {
+        //2:得到图片的画笔,之前一直在窗口上直接绘制,现在在图片上绘制
+        Graphics g = bufImg.getGraphics();
+        //3:使用图片画笔将所有的内容绘制到图片中
         //设置字体
         g.setFont(Constant.GAME_FONT);
         switch (gameState){
@@ -85,6 +92,8 @@ public class GameFrame extends Frame implements Runnable{
                 drawOver(g);
                 break;
         }
+        //4:使用系统画笔,将图片绘制到frame上来
+        g1.drawImage(bufImg,0,0, null);
     }
 
 
@@ -195,16 +204,26 @@ public class GameFrame extends Frame implements Runnable{
                 if(--menuIndex < 0) {
                     menuIndex = Constant.MENUS.length - 1;
                 }
-                repaint();
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
                 if(++menuIndex > Constant.MENUS.length - 1){
                     menuIndex = 0;
                 }
-                repaint();
                 break;
+            case KeyEvent.VK_ENTER:
+                //TODO
+                newGame();
+                break;
+
         }
+    }
+
+    /**
+     * 开始新游戏的方法
+     */
+    private void newGame() {
+        gameState = Constant.STAtE_RUN;
     }
 
     @Override
