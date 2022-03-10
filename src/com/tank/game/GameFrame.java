@@ -4,6 +4,8 @@ import com.tank.util.Constant;
 import sun.security.mscapi.CPublicKey;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -16,10 +18,11 @@ import java.awt.event.WindowEvent;
  * 游戏的主窗口类，即顶层窗口类
  * 所以的游戏展示的内容都要再此类内实现
  */
-public class GameFrame extends Frame {
+public class GameFrame extends Frame implements Runnable{
     //表示游戏状态
     public static int gameState;
-
+    //菜单指向
+    private int menuIndex;
     /**
      * 一个方法尽量不要超过50行
      * 对窗口进行初始化
@@ -28,10 +31,10 @@ public class GameFrame extends Frame {
     public GameFrame() throws HeadlessException {
         initFrame();
         initEventListener();
+        //启动用于刷新窗口的线程
+        new Thread(this).start();
     }
-    private void initGame(){
 
-    }
 
 
     /**
@@ -50,23 +53,8 @@ public class GameFrame extends Frame {
 
         //设置窗口可见
         setVisible(true);
-    }
-
-    /**
-     * 初始化事件的监听
-     */
-    private void initEventListener(){
-        //注册监听事件
-        addWindowListener(new WindowAdapter() {
-            /**
-             * 点击关闭按钮的时候，方法会被自动调用
-             * @param e
-             */
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        //调用画笔
+        repaint();
     }
 
     /**
@@ -78,21 +66,35 @@ public class GameFrame extends Frame {
      */
     @Override
     public void update(Graphics g) {
+        //设置字体
+        g.setFont(Constant.GAME_FONT);
         switch (gameState){
             case Constant.STAtE_MENU:
                 drawMenu(g);
                 break;
             case Constant.STAtE_HELP:
+                drawHelp(g);
                 break;
             case Constant.STAtE_ABOUT:
-
+                drawAbout(g);
                 break;
             case Constant.STAtE_RUN:
-
+                drawRun(g);
                 break;
             case Constant.STAtE_OVER:
+                drawOver(g);
                 break;
         }
+    }
+
+
+    private void drawHelp(Graphics g) {
+    }
+    private void drawAbout(Graphics g) {
+    }
+    private void drawRun(Graphics g) {
+    }
+    private void drawOver(Graphics g) {
     }
 
     /**
@@ -109,15 +111,111 @@ public class GameFrame extends Frame {
         // 把画笔换成白色 写字
         g.setColor(Color.WHITE);
         //估计字符串在屏幕上的宽度是50像素, 可以精确的求但是比较麻烦
-        final int STR_WIDTH = 50;
+        final int STR_WIDTH = 76;
         int x = Constant.FRAME_WIdTH - STR_WIDTH >> 1;
         //从1/3处高度开始绘制
         int y = Constant.FRAME_HEIGHT / 3;
         //行间距
-        final int DIS = 30;
+        final int DIS = 50;
         //以上的常量只在这个方法中使用,故不放入Constant
         for (int i = 0; i < Constant.MENUS.length; i++) {
+            //选中的菜单项设置为红色，其他的为白色
+            if(i == menuIndex){
+                g.setColor(Color.RED);
+            }
+            else g.setColor(Color.WHITE);
             g.drawString(Constant.MENUS[i], x,y + DIS * i);
+        }
+    }
+    /**
+     * 初始化事件的监听
+     */
+    private void initEventListener(){
+        //注册监听事件
+        addWindowListener(new WindowAdapter() {
+            /**
+             * 点击关闭按钮的时候，方法会被自动调用
+             * @param e
+             */
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        addKeyListener(new KeyAdapter() {
+            //按键被按下的时候被回调的方法
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //被按下键的键值
+                int keyCode = e.getKeyCode();
+                //不同的游戏状态，给出不同的处理的方法
+                switch (gameState){
+                    case Constant.STAtE_MENU:
+                        keyEventMenu(keyCode);
+                        break;
+                    case Constant.STAtE_HELP:
+                        keyEventHelp(keyCode);
+                        break;
+                    case Constant.STAtE_ABOUT:
+                        keyEventAbout(keyCode);
+                        break;
+                    case Constant.STAtE_RUN:
+                        keyEventRun(keyCode);
+                        break;
+                    case Constant.STAtE_OVER:
+                        keyEventOver(keyCode);
+                        break;
+                }
+            }
+
+
+            //按键松开的时候回调的内容
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+    }
+    private void keyEventOver(int keyCode) {
+    }
+
+    private void keyEventRun(int keyCode) {
+    }
+
+    private void keyEventAbout(int keyCode) {
+    }
+
+    private void keyEventHelp(int keyCode) {
+    }
+    //菜单状态下的按键的处理
+    private void keyEventMenu(int keyCode) {
+        switch (keyCode){
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+                if(--menuIndex < 0) {
+                    menuIndex = Constant.MENUS.length - 1;
+                }
+                repaint();
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+                if(++menuIndex > Constant.MENUS.length - 1){
+                    menuIndex = 0;
+                }
+                repaint();
+                break;
+        }
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            repaint();
+            try {
+                Thread.sleep(Constant.REPAINT_INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
