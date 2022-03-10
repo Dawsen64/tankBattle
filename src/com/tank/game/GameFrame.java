@@ -85,6 +85,7 @@ public class GameFrame extends Frame {
             case Constant.STAtE_HELP:
                 break;
             case Constant.STAtE_ABOUT:
+
                 break;
             case Constant.STAtE_RUN:
 
