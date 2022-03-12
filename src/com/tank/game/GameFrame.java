@@ -27,6 +27,14 @@ public class GameFrame extends Frame implements Runnable{
     public static int gameState;
     //菜单指向
     private int menuIndex;
+    //标题栏的高度
+    public static int titleBarH;
+    public static int frameBottom;
+    public static int frameLeft;
+    public static int frameRight;
+
+    //定义坦克对象
+    private Tank myTank;
     /**
      * 一个方法尽量不要超过50行
      * 对窗口进行初始化
@@ -57,8 +65,15 @@ public class GameFrame extends Frame implements Runnable{
 
         //设置窗口可见
         setVisible(true);
-        //调用画笔
-        repaint();
+//        //调用画笔
+//        repaint();
+        //求窗口四周的隐藏边框大小，用于防止坦克的一部分被遮住看不见，
+        //在老师的视频中没有表现出来，可能是操作系统版本不同
+        //求标题栏的高度
+        titleBarH =  getInsets().top;
+        frameBottom = getInsets().bottom;
+        frameLeft = getInsets().left;
+        frameRight = getInsets().right;
     }
 
     /**
@@ -66,7 +81,7 @@ public class GameFrame extends Frame implements Runnable{
      * 该方法负责了所有的绘制的内容,所有需要在屏幕中显示的内容,都要在
      * 该方法内调用. 该方法不能主动调用. 必须通过调用repaint():去回
      * 调该方法
-     * @param g
+     * @param g1
      */
     @Override
     public void update(Graphics g1) {
@@ -107,6 +122,8 @@ public class GameFrame extends Frame implements Runnable{
         g.setColor(Color.BLACK);
         //用画笔涂黑的区域
         g.fillRect(0,0, Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT);
+
+        myTank.draw(g);
     }
     private void drawOver(Graphics g) {
     }
@@ -159,24 +176,24 @@ public class GameFrame extends Frame implements Runnable{
             //按键被按下的时候被回调的方法
             @Override
             public void keyPressed(KeyEvent e) {
-                //被按下键的键值
+                //获得被按下键的键值
                 int keyCode = e.getKeyCode();
                 //不同的游戏状态，给出不同的处理的方法
                 switch (gameState){
                     case Constant.STAtE_MENU:
-                        keyEventMenu(keyCode);
+                        keyPressedEventMenu(keyCode);
                         break;
                     case Constant.STAtE_HELP:
-                        keyEventHelp(keyCode);
+                        keyPressedEventHelp(keyCode);
                         break;
                     case Constant.STAtE_ABOUT:
-                        keyEventAbout(keyCode);
+                        keyPressedEventAbout(keyCode);
                         break;
                     case Constant.STAtE_RUN:
-                        keyEventRun(keyCode);
+                        keyPressedEventRun(keyCode);
                         break;
                     case Constant.STAtE_OVER:
-                        keyEventOver(keyCode);
+                        keyPressedEventOver(keyCode);
                         break;
                 }
             }
@@ -185,23 +202,72 @@ public class GameFrame extends Frame implements Runnable{
             //按键松开的时候回调的内容
             @Override
             public void keyReleased(KeyEvent e) {
-
+                //获得被松开键的键值
+                int keyCode = e.getKeyCode();
+                //不同的游戏状态，给出不同的处理的方法
+                if(gameState == Constant.STAtE_RUN){
+                    keyReleasedEventRun(keyCode);
+                }
             }
         });
     }
-    private void keyEventOver(int keyCode) {
+
+    /**
+     * 按键松开的时候，游戏中的处理方法
+     * @param keyCode
+     */
+    private void keyReleasedEventRun(int keyCode) {
+        switch (keyCode){
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+                myTank.setState(Tank.STATE_STAND);
+                break;
+
+        }
     }
 
-    private void keyEventRun(int keyCode) {
+    private void keyPressedEventOver(int keyCode) {
     }
 
-    private void keyEventAbout(int keyCode) {
+    private void keyPressedEventRun(int keyCode) {
+        switch (keyCode){
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
+                myTank.setDir(Tank.DIR_UP);
+                myTank.setState(Tank.STATE_MOVE);
+                break;
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
+                myTank.setDir(Tank.DIR_DOwN);
+                myTank.setState(Tank.STATE_MOVE);
+                break;
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
+                myTank.setDir(Tank.DIR_LEFT);
+                myTank.setState(Tank.STATE_MOVE);
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
+                myTank.setDir(Tank.DiR_RIGHT);
+                myTank.setState(Tank.STATE_MOVE);
+                break;
+
+        }
     }
 
-    private void keyEventHelp(int keyCode) {
+    private void keyPressedEventAbout(int keyCode) {
+    }
+
+    private void keyPressedEventHelp(int keyCode) {
     }
     //菜单状态下的按键的处理
-    private void keyEventMenu(int keyCode) {
+    private void keyPressedEventMenu(int keyCode) {
         switch (keyCode){
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
@@ -228,6 +294,7 @@ public class GameFrame extends Frame implements Runnable{
      */
     private void newGame() {
         gameState = Constant.STAtE_RUN;
+        myTank = new Tank(400,200, Tank.DIR_DOwN);
     }
 
     @Override

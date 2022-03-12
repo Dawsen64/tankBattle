@@ -5,6 +5,7 @@ package com.tank.game;
  * @Date: 2022/3/10 15:23
  */
 
+import com.tank.util.Constant;
 import com.tank.util.MyUtil;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class Tank {
     public static final int DIR_LEFT = 2;
     public static final int DiR_RIGHT = 3;
     //坦克大小，圆形的半径
-    public static final int RADIUS = 16;
+    public static final int RADIUS = 20;
     //默认速度 每帧的像素 一帧30ms跑四个像素
     public static final int DEFAUlT_SPEED = 4;
     //坦克的状态
@@ -52,6 +53,39 @@ public class Tank {
         this.dir = dir;
         //随机颜色
         this.color = MyUtil.getRandomColor();
+        this.speed = DEFAUlT_SPEED;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getDir() {
+        return dir;
+    }
+
+    public void setDir(int dir) {
+        this.dir = dir;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     /**
@@ -59,6 +93,79 @@ public class Tank {
      * @param g
      */
     public void draw(Graphics g){
+        logic();
+        g.setColor(color);
+        g.fillOval(x-RADIUS, y-RADIUS, RADIUS<<1,RADIUS<<1);
+        int endX = x;
+        int endY = y;
+        switch (dir){
+            case DIR_UP:
+                endY = y - RADIUS*2;
+                //使线拉粗
+                g.drawLine(x-1, y, endX-1, endY);
+                g.drawLine(x+1, y, endX+1, endY);
+                break;
+            case DIR_DOwN:
+                endY = y + RADIUS*2;
+                g.drawLine(x-1, y, endX-1, endY);
+                g.drawLine(x+1, y, endX+1, endY);
+                break;
+            case DIR_LEFT:
+                endX = x - RADIUS*2;
+                g.drawLine(x, y-1, endX, endY-1);
+                g.drawLine(x, y, endX+1, endY+1);
+                break;
+            case DiR_RIGHT:
+                endX = x + RADIUS*2;
+                g.drawLine(x, y-1, endX, endY-1);
+                g.drawLine(x, y+1, endX, endY+1);
+                break;
+        }
+        g.drawLine(x, y, endX, endY);
+        //
+    }
 
+    /**
+     * 坦克的逻辑处理
+     */
+    private void logic(){
+        switch (state){
+            case STATE_STAND:
+                break;
+            case STATE_MOVE:
+                move();
+                break;
+            case STATE_DIE:
+                break;
+        }
+    }
+    //坦克的移动的功能
+    private void move(){
+        switch (dir){
+            case DIR_UP:
+                y -= speed;
+                if (y < RADIUS + GameFrame.titleBarH){
+                    y = RADIUS + GameFrame.titleBarH;
+                }
+                break;
+            case DIR_DOwN:
+                y += speed;
+                if (y > Constant.FRAME_HEIGHT - RADIUS - GameFrame.frameBottom){
+                    y = Constant.FRAME_HEIGHT - RADIUS - GameFrame.frameBottom;
+                }
+                break;
+            case DIR_LEFT:
+                x -= speed;
+                if(x < RADIUS + GameFrame.frameLeft){
+                    x = RADIUS + GameFrame.frameLeft;
+                }
+                break;
+            case DiR_RIGHT:
+                x += speed;
+                if(x > Constant.FRAME_WIdTH - RADIUS - GameFrame.frameRight){
+                    x = Constant.FRAME_WIdTH - RADIUS - GameFrame.frameRight;
+                }
+                break;
+        }
     }
 }
