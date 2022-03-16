@@ -16,6 +16,24 @@ import java.util.List;
  * 坦克类
  */
 public class Tank {
+    //坦克的图片数组
+    private static Image[] tankImg;
+    private static Image[] enemyImg;
+    //静态代码块中对它进行初始化
+    static {
+        tankImg = new Image[4];
+        tankImg[0] = Toolkit.getDefaultToolkit().createImage("res/images/player1/p1tankU.gif");
+        tankImg[1] = Toolkit.getDefaultToolkit().createImage("res/images/player1/p1tankD.gif");
+        tankImg[2] = Toolkit.getDefaultToolkit().createImage("res/images/player1/p1tankL.gif");
+        tankImg[3] = Toolkit.getDefaultToolkit().createImage("res/images/player1/p1tankR.gif");
+
+        enemyImg = new Image[4];
+        enemyImg[0] = Toolkit.getDefaultToolkit().createImage("res/images/enemy/enemy1U.gif");
+        enemyImg[1] = Toolkit.getDefaultToolkit().createImage("res/images/enemy/enemy1D.gif");
+        enemyImg[2] = Toolkit.getDefaultToolkit().createImage("res/images/enemy/enemy1L.gif");
+        enemyImg[3] = Toolkit.getDefaultToolkit().createImage("res/images/enemy/enemy1R.gif");
+
+    }
     //四个方向
     public static final int DIR_UP = 0;
     public static final int DIR_DOwN = 1;
@@ -88,20 +106,25 @@ public class Tank {
         this.state = state;
     }
 
-    /**
-     * 绘制坦克
-     * @param g
-     */
     public void draw(Graphics g){
         logic();
 
-        drawTank(g);
+        drawImgTank(g);
 
         drawBullets(g);
         //
     }
 
-    /**
+    /**有两种方法绘制坦克,一种是图片,一种是用系统画笔绘制
+     * 用图片绘制坦克
+     * @param g
+     */
+    private void drawImgTank(Graphics g) {
+
+        g.drawImage(tankImg[dir], x - (Constant.TANK_IMG_SIZE / 2), y - (Constant.TANK_IMG_SIZE/2), null );
+    }
+
+    /**用系统的方式去绘制坦克
      * 画坦克和炮筒
      * @param g
      */

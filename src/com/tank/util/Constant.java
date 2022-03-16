@@ -15,7 +15,7 @@ public class Constant {
     /*******************游戏窗口相关*************************/
     public static final String GAME_TITLE = "坦克大战";
 
-    public static final int FRAME_WIdTH = 900;
+    public static final int FRAME_WIdTH =800;
     public static final int FRAME_HEIGHT = 700;
 
     //获得当前屏幕的宽度，
@@ -55,4 +55,7 @@ public class Constant {
     //字体设置
     public static final Font GAME_FONT = new Font("宋体", Font.BOLD, 24);
     public static final int REPAINT_INTERVAL = 30;
+
+    //坦克图片的大小 60X60
+    public static final int TANK_IMG_SIZE = 60;
 }
