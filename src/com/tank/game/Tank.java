@@ -45,7 +45,7 @@ public class Tank {
     private Color color;
     //TODO 炮弹
     //容器用于管理炮弹,相当与弹夹
-    private List bullets = new ArrayList();
+    private List<Bullet> bullets = new ArrayList<>();
 
     public Tank(int x, int y, int dir) {
         this.x = x;
@@ -94,7 +94,20 @@ public class Tank {
      */
     public void draw(Graphics g){
         logic();
+
+        drawTank(g);
+
+        drawBullets(g);
+        //
+    }
+
+    /**
+     * 画坦克和炮筒
+     * @param g
+     */
+    private void drawTank(Graphics g){
         g.setColor(color);
+        //绘制坦克的圆
         g.fillOval(x-RADIUS, y-RADIUS, RADIUS<<1,RADIUS<<1);
         int endX = x;
         int endY = y;
@@ -122,7 +135,6 @@ public class Tank {
                 break;
         }
         g.drawLine(x, y, endX, endY);
-        //
     }
 
     /**
@@ -166,6 +178,45 @@ public class Tank {
                     x = Constant.FRAME_WIdTH - RADIUS - GameFrame.frameRight;
                 }
                 break;
+        }
+
+
+    }
+
+    /**
+     * 坦克发射炮弹的功能
+     *  创建了一个子弹对象, 子弹的对象的属性信息通过坦克的信息获得
+     *  然后将创建的子弹添加到坦克的管理的容器中
+     */
+    public void fire(){
+        int bulletX = x;
+        int bulletY = y;
+        switch (dir){
+            case DIR_UP:
+                bulletY -= 2*RADIUS;
+                break;
+            case DIR_DOwN:
+                bulletY += 2*RADIUS;
+                break;
+            case DIR_LEFT:
+                bulletX -= 2*RADIUS;
+                break;
+            case DiR_RIGHT:
+                bulletX += 2*RADIUS;
+                break;
+
+        }
+        Bullet bullet = new Bullet(bulletX, bulletY, dir, atk, color);
+        bullets.add(bullet);
+
+    }
+    /**
+     * 将当前坦克发射的所有的子弹绘制出来
+     * @param g
+     */
+    private void drawBullets(Graphics g){
+        for (Bullet bullet : bullets){
+            bullet.draw(g);
         }
     }
 }

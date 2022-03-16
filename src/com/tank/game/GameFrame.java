@@ -257,6 +257,9 @@ public class GameFrame extends Frame implements Runnable{
                 myTank.setDir(Tank.DiR_RIGHT);
                 myTank.setState(Tank.STATE_MOVE);
                 break;
+            case KeyEvent.VK_SPACE:
+                myTank.fire();
+                break;
 
         }
     }
@@ -299,6 +302,9 @@ public class GameFrame extends Frame implements Runnable{
 
     @Override
     public void run() {
+        /**
+         * 在此调用repaint,回调update
+         */
         while(true){
             repaint();
             try {
