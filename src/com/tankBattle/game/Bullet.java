@@ -1,11 +1,11 @@
-package com.tank.game;
+package com.tankBattle.game;
 
 /**
  * @Author: zqiusen@qq.com
  * @Date: 2022/3/12 14:31
  */
 
-import com.tank.util.Constant;
+import com.tankBattle.util.Constant;
 
 import java.awt.*;
 

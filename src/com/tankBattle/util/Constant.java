@@ -1,4 +1,4 @@
-package com.tank.util;
+package com.tankBattle.util;
 
 /**
  * @Author: zqiusen@qq.com

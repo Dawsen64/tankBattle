@@ -28,3 +28,4 @@ FPS: frame per second
 
 10:敌人坦克的控制
     1: 随机的在屏幕的左上角和右上角产生敌人的坦克
+    2: 坦克相关的类: 父类:Tank 子类: MyTank EnemyTank

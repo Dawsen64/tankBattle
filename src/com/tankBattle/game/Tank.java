@@ -1,13 +1,13 @@
-package com.tank.game;
+package com.tankBattle.game;
 
 /**
  * @Author: zqiusen@qq.com
  * @Date: 2022/3/10 15:23
  */
 
-import com.tank.util.BulletsPool;
-import com.tank.util.Constant;
-import com.tank.util.MyUtil;
+import com.tankBattle.util.BulletsPool;
+import com.tankBattle.util.Constant;
+import com.tankBattle.util.MyUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -75,17 +75,7 @@ public class Tank {
         this.color = MyUtil.getRandomColor();
         this.speed = DEFAUlT_SPEED;
     }
-    //用于创建一个敌人的坦克
-    public static Tank createEnemy(){
-        int x = MyUtil.getRandomNumber(0,2) == 0 ? RADIUS : Constant.FRAME_WIdTH - RADIUS;
-        int y = GameFrame.titleBarH + RADIUS;
-        int dir = DIR_DOwN;
-        Tank enemy = new Tank(x,y,dir);
-        enemy.isEnemy = true;
-        //TODO
-        enemy.state = STATE_MOVE;
-        return  enemy;
-    }
+
 
     public int getX() {
         return x;
@@ -117,6 +107,14 @@ public class Tank {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public boolean isEnemy() {
+        return isEnemy;
+    }
+
+    public void setEnemy(boolean enemy) {
+        isEnemy = enemy;
     }
 
     public void draw(Graphics g){

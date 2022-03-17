@@ -1,12 +1,11 @@
-package com.tank.app;
+package com.tankBattle.app;
 
 /**
  * @Author: zqiusen@qq.com
  * @Date: 2022/3/9 19:13
  */
 
-import com.tank.game.GameFrame;
-import com.tank.util.Constant;
+import com.tankBattle.game.GameFrame;
 
 /**
  * 程序入口

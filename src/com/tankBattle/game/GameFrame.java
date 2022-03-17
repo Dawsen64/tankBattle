@@ -1,8 +1,9 @@
-package com.tank.game;
+package com.tankBattle.game;
 
-import com.tank.util.Constant;
-import org.omg.IOP.ENCODING_CDR_ENCAPS;
-import sun.security.mscapi.CPublicKey;
+import com.tankBattle.tank.Tank;
+import com.tankBattle.tank.MyTank;
+import com.tankBattle.tank.EnemyTank;
+import com.tankBattle.util.Constant;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -40,7 +41,7 @@ public class GameFrame extends Frame implements Runnable{
     //定义坦克对象,自己的坦克
     private Tank myTank;
     //敌人的坦克
-    private List<Tank> enemies = new ArrayList<>();
+    private List<EnemyTank> enemies = new ArrayList<>();
 
     /**
      * 一个方法尽量不要超过50行
@@ -313,7 +314,7 @@ public class GameFrame extends Frame implements Runnable{
      */
     private void newGame() {
         gameState = Constant.STAtE_RUN;
-        myTank = new Tank(400, 200, Tank.DIR_DOwN);
+        myTank = new MyTank(400, 200, Tank.DIR_DOwN);
         /**
          * 使用一个单独的线程用于控制生产敌人的坦克
          */
@@ -322,7 +323,7 @@ public class GameFrame extends Frame implements Runnable{
             public void run() {
                 while (true) {
                     if (enemies.size() < Constant.ENEMY_MAX_COUNT) {
-                        Tank enemy = Tank.createEnemy();
+                        EnemyTank enemy = EnemyTank.createEnemy();
                         enemies.add(enemy);
                     }
                     try {

@@ -1,11 +1,11 @@
-package com.tank.util;
+package com.tankBattle.util;
 
 /**
  * @Author: zqiusen@qq.com
  * @Date: 2022/3/17 8:24
  */
 
-import com.tank.game.Bullet;
+import com.tankBattle.game.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;

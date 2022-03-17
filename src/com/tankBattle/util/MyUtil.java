@@ -1,7 +1,6 @@
-package com.tank.util;
+package com.tankBattle.util;
 
 import java.awt.*;
-import java.text.CollationElementIterator;
 
 /**
  * @Author: zqiusen@qq.com
