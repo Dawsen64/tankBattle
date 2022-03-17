@@ -58,4 +58,8 @@ public class Constant {
 
     //坦克图片的大小 60X60
     public static final int TANK_IMG_SIZE = 60;
+    //最多敌人坦克数量
+    public static final int ENEMY_MAX_COUNT = 10;
+    //每5000毫秒产生一辆敌人坦克
+    public static final int ENEMY_BORN_INTERVAL = 5000;
 }

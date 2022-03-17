@@ -62,7 +62,8 @@ public class Tank {
     private int state = STATE_STAND;
     //颜色
     private Color color;
-    //TODO 炮弹
+    private boolean isEnemy = false;
+
     //容器用于管理炮弹,相当与弹夹
     private List<Bullet> bullets = new ArrayList<>();
 
@@ -73,6 +74,17 @@ public class Tank {
         //随机颜色
         this.color = MyUtil.getRandomColor();
         this.speed = DEFAUlT_SPEED;
+    }
+    //用于创建一个敌人的坦克
+    public static Tank createEnemy(){
+        int x = MyUtil.getRandomNumber(0,2) == 0 ? RADIUS : Constant.FRAME_WIdTH - RADIUS;
+        int y = GameFrame.titleBarH + RADIUS;
+        int dir = DIR_DOwN;
+        Tank enemy = new Tank(x,y,dir);
+        enemy.isEnemy = true;
+        //TODO
+        enemy.state = STATE_MOVE;
+        return  enemy;
     }
 
     public int getX() {
@@ -121,9 +133,13 @@ public class Tank {
      * @param g
      */
     private void drawImgTank(Graphics g) {
+        if(isEnemy){
+            g.drawImage(enemyImg[dir], x - (Constant.TANK_IMG_SIZE / 2), y - (Constant.TANK_IMG_SIZE/2), null );
+        }else {
+            g.drawImage(tankImg[dir], x - (Constant.TANK_IMG_SIZE / 2), y - (Constant.TANK_IMG_SIZE / 2), null);
+        }
+        }
 
-        g.drawImage(tankImg[dir], x - (Constant.TANK_IMG_SIZE / 2), y - (Constant.TANK_IMG_SIZE/2), null );
-    }
 
     /**用系统的方式去绘制坦克
      * 画坦克和炮筒
@@ -235,6 +251,7 @@ public class Tank {
         }
         //使用对象池
         Bullet bullet = BulletsPool.get();
+        //设置子弹的属性
         bullet.setX(bulletX);
         bullet.setY(bulletY);
         bullet.setDir(dir);

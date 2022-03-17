@@ -1,6 +1,7 @@
 package com.tank.game;
 
 import com.tank.util.Constant;
+import org.omg.IOP.ENCODING_CDR_ENCAPS;
 import sun.security.mscapi.CPublicKey;
 
 import java.awt.*;
@@ -9,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: zqiusen@qq.com
@@ -34,8 +37,11 @@ public class GameFrame extends Frame implements Runnable{
     public static int frameLeft;
     public static int frameRight;
 
-    //定义坦克对象
+    //定义坦克对象,自己的坦克
     private Tank myTank;
+    //敌人的坦克
+    private List<Tank> enemies = new ArrayList<>();
+
     /**
      * 一个方法尽量不要超过50行
      * 对窗口进行初始化
@@ -124,7 +130,16 @@ public class GameFrame extends Frame implements Runnable{
         //用画笔涂黑的区域
         g.fillRect(0,0, Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT);
 
+        drawEnemies(g);
+
         myTank.draw(g);
+    }
+    //绘制所有的敌人的坦克
+    private void drawEnemies(Graphics g){
+        for (int i = 0; i < enemies.size(); i++) {
+            Tank enemy = enemies.get(i);
+            enemy.draw(g);
+        }
     }
     private void drawOver(Graphics g) {
     }
@@ -298,7 +313,26 @@ public class GameFrame extends Frame implements Runnable{
      */
     private void newGame() {
         gameState = Constant.STAtE_RUN;
-        myTank = new Tank(400,200, Tank.DIR_DOwN);
+        myTank = new Tank(400, 200, Tank.DIR_DOwN);
+        /**
+         * 使用一个单独的线程用于控制生产敌人的坦克
+         */
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (enemies.size() < Constant.ENEMY_MAX_COUNT) {
+                        Tank enemy = Tank.createEnemy();
+                        enemies.add(enemy);
+                    }
+                    try {
+                        Thread.sleep(Constant.ENEMY_BORN_INTERVAL);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     @Override
