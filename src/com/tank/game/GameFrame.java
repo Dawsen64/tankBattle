@@ -20,8 +20,9 @@ import java.awt.image.BufferedImage;
  * 所以的游戏展示的内容都要再此类内实现
  */
 public class GameFrame extends Frame implements Runnable{
-    // 定义一张和屏幕大小一致的图片
-    private BufferedImage bufImg = new BufferedImage(Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
+    // 1:定义一张和屏幕大小一致的图片
+    private BufferedImage bufImg =
+            new BufferedImage(Constant.FRAME_WIdTH, Constant.FRAME_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
 
     //表示游戏状态
     public static int gameState;

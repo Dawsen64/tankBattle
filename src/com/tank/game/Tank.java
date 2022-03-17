@@ -5,6 +5,7 @@ package com.tank.game;
  * @Date: 2022/3/10 15:23
  */
 
+import com.tank.util.BulletsPool;
 import com.tank.util.Constant;
 import com.tank.util.MyUtil;
 
@@ -215,21 +216,33 @@ public class Tank {
         int bulletX = x;
         int bulletY = y;
         switch (dir){
+            /**
+             * 有炮筒设置成2*RADIUS,图片设置成RADIUS
+             */
             case DIR_UP:
-                bulletY -= 2*RADIUS;
+                bulletY -= RADIUS;
                 break;
             case DIR_DOwN:
-                bulletY += 2*RADIUS;
+                bulletY += RADIUS;
                 break;
             case DIR_LEFT:
-                bulletX -= 2*RADIUS;
+                bulletX -= RADIUS;
                 break;
             case DiR_RIGHT:
-                bulletX += 2*RADIUS;
+                bulletX += RADIUS;
                 break;
 
         }
-        Bullet bullet = new Bullet(bulletX, bulletY, dir, atk, color);
+        //使用对象池
+        Bullet bullet = BulletsPool.get();
+        bullet.setX(bulletX);
+        bullet.setY(bulletY);
+        bullet.setDir(dir);
+        bullet.setAtk(atk);
+        bullet.setColor(color);
+        bullet.setVisible(true);
+        //没有使用对象池的语句
+        //Bullet bullet = new Bullet(bulletX, bulletY, dir, atk, color);
         bullets.add(bullet);
 
     }
@@ -240,6 +253,14 @@ public class Tank {
     private void drawBullets(Graphics g){
         for (Bullet bullet : bullets){
             bullet.draw(g);
+        }
+        //遍历所有的子弹,将不可见的子弹移除,并还原回对象池
+        for (int i = 0; i < bullets.size(); i++) {
+            Bullet bullet = bullets.get(i);
+            if(!bullet.isVisible()){
+                Bullet remove = bullets.remove(i);
+                BulletsPool.theReturn(remove);
+            }
         }
     }
 }

@@ -15,8 +15,8 @@ public class Constant {
     /*******************游戏窗口相关*************************/
     public static final String GAME_TITLE = "坦克大战";
 
-    public static final int FRAME_WIdTH =800;
-    public static final int FRAME_HEIGHT = 700;
+    public static final int FRAME_WIdTH =1280;
+    public static final int FRAME_HEIGHT = 720;
 
     //获得当前屏幕的宽度，
     static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
